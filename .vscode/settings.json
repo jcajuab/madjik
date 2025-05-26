@@ -20,5 +20,6 @@
   ],
   "files.associations": {
     "*.css": "tailwindcss"
-  }
+  },
+  "rust-analyzer.linkedProjects": ["src-tauri/Cargo.toml"]
 }
