@@ -1,0 +1,7 @@
+[build]
+rustc-wrapper = "sccache"
+incremental = true
+
+[profile.dev]
+codegen-units = 1
+debug = 0

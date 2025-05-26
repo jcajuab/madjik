@@ -1,0 +1,19 @@
+# Dependencies
+node_modules/
+
+# Build Output
+dist/
+
+# Logs
+logs/
+*.log
+pnpm-debug.log*
+
+# Miscellaneous
+.idea/
+.DS_Store
+Thumbs.db
+
+# Tauri
+src-tauri/target/
+src-tauri/gen/schemas/

@@ -1,0 +1,18 @@
+pre-commit:
+  jobs:
+    - run: pnpm eslint --fix "{staged_files}"
+      glob: "*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"
+      stage_fixed: true
+    - run: pnpm prettier --write "{staged_files}" --ignore-unknown
+      stage_fixed: true
+
+prepare-commit-msg:
+  jobs:
+    - interactive: true
+      run: pnpm exec cz --hook
+      env:
+        LEFTHOOK: 0
+
+commit-msg:
+  jobs:
+    - run: pnpm exec commitlint --edit {1}
