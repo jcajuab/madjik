@@ -5,7 +5,6 @@ import { z } from "zod"
 
 import { Patient } from "../types/patient"
 
-// Define the form schema using Zod
 const patientFormSchema = z.object({
   firstName: z.string().min(1, { message: "First name is required" }),
   middleInitial: z.string().max(1).optional(),
@@ -65,7 +64,6 @@ export const AddPatientModal = ({
   const onFormSubmit = async (data: PatientFormData) => {
     try {
       setIsSubmitting(true)
-      // Validate the data against the schema
       const validatedData = patientFormSchema.parse(data)
       await onSubmit(validatedData as Omit<Patient, "id">)
       onClose()
