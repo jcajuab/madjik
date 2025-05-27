@@ -1,9 +1,10 @@
 import { invoke } from "@tauri-apps/api/core"
 import { useEffect, useState } from "react"
+import { Link } from "react-router-dom"
 
 import { AddPatientModal } from "../components/AddPatientModal"
 import { PatientTable } from "../components/PatientTable"
-import { Patient } from "../types/patient"
+import { Patient } from "../types"
 
 export const Dashboard = () => {
   const [patients, setPatients] = useState<Patient[]>([])
@@ -53,76 +54,75 @@ export const Dashboard = () => {
   }, [searchName, patients])
 
   return (
-    <main className="bg-base-200 min-h-screen p-6">
+    <main className="min-h-screen bg-gray-100 p-6">
       <div className="mx-auto max-w-7xl">
-        <div>
-          <div className="flex h-fit flex-row items-start justify-between">
-            <div>
-              <h1 className="text-3xl font-bold">Patient Dashboard</h1>
-              <p className="text-lg">
-                View and manage patients stored locally in the Tauri backend.
-              </p>
-            </div>
-            <div className="flex items-center gap-4">
-              <button
-                className="btn btn-primary"
-                onClick={() => setShowAddModal(true)}
-              >
-                Add Patient
-              </button>
-              <button
-                className="btn btn-primary"
-                onClick={async () => {
-                  const dummy: Omit<Patient, "id"> = {
-                    firstName: "John",
-                    middleInitial: "D",
-                    lastName: "Doe",
-                    dateOfBirth: "1990-01-01",
-                    sex: "male",
-                    phoneNumber: "1234567890",
-                    emailAddress: "john.doe@example.com",
-                    physicalAddress: "123 Main St",
-                    emergencyContactFirstName: "Jane",
-                    emergencyContactMiddleInitial: "E",
-                    emergencyContactLastName: "Doe",
-                    emergencyContactRelationship: "Spouse",
-                    emergencyContactPhoneNumber: "0987654321",
-                  }
-                  await invoke<number>("create_patient", { newPatient: dummy })
-                  await loadPatients()
-                }}
-              >
-                Add Dummy Patient
-              </button>
-            </div>
-            <AddPatientModal
-              isOpen={showAddModal}
-              onClose={() => setShowAddModal(false)}
-              onSubmit={handleAddPatient}
-            />
+        <div className="mb-8 flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900">
+              Patient Management
+            </h1>
+            <p className="text-gray-600">
+              Manage patient records and appointments
+            </p>
           </div>
-          <div className="py-4">
-            <input
-              className="input input-bordered w-full"
-              type="text"
-              value={searchName}
-              onChange={(e) => setSearchName(e.target.value)}
-              placeholder="Search patients..."
-            />
+          <div className="flex space-x-4">
+            <Link
+              to="/demo"
+              className="rounded-md bg-green-600 px-4 py-2 text-white transition-colors hover:bg-green-700"
+            >
+              View Demo
+            </Link>
+            <button
+              onClick={() => setShowAddModal(true)}
+              className="rounded-md bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700"
+            >
+              Add Patient
+            </button>
           </div>
         </div>
-        {loading ? (
-          <div className="flex items-center justify-center">
-            <span className="loading loading-spinner loading-lg text-primary"></span>
+
+        <div className="rounded-lg bg-white p-6 shadow">
+          <div className="mb-6">
+            <input
+              type="text"
+              className="w-full rounded-md border border-gray-300 p-2 focus:border-transparent focus:ring-2 focus:ring-blue-500"
+              value={searchName}
+              onChange={(e) => setSearchName(e.target.value)}
+              placeholder="Search patients by name..."
+            />
           </div>
-        ) : filteredPatients.length === 0 ? (
-          <p className="text-center text-gray-500">No patients found.</p>
-        ) : (
-          <div className="rounded-box border-base-content/5 bg-base-100 overflow-x-auto border">
-            <PatientTable patients={filteredPatients} />
-          </div>
-        )}
+
+          {loading ? (
+            <div className="flex items-center justify-center py-12">
+              <div className="h-12 w-12 animate-spin rounded-full border-t-2 border-b-2 border-blue-500"></div>
+            </div>
+          ) : filteredPatients.length === 0 ? (
+            <div className="py-12 text-center">
+              <p className="text-lg text-gray-500">
+                {searchName
+                  ? "No matching patients found"
+                  : "No patients found"}
+              </p>
+              <button
+                onClick={() => setShowAddModal(true)}
+                className="mt-4 rounded-md bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700"
+              >
+                Add Your First Patient
+              </button>
+            </div>
+          ) : (
+            <div className="overflow-x-auto">
+              <PatientTable patients={filteredPatients} />
+            </div>
+          )}
+        </div>
       </div>
+
+      <AddPatientModal
+        isOpen={showAddModal}
+        onClose={() => setShowAddModal(false)}
+        onSubmit={handleAddPatient}
+      />
     </main>
   )
 }

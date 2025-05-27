@@ -1,100 +1,72 @@
-use crate::utils::WithId;
-use lazy_static::lazy_static;
-use serde::{Deserialize, Serialize};
-use std::sync::Mutex;
-use tauri::command;
+use crate::db::models::{CreatePatient, Patient, UpdatePatient};
+use crate::db::Repository;
+use tauri::State;
+use std::sync::Arc;
 
-#[derive(Debug, Serialize, Deserialize, Clone)]
-#[serde(rename_all = "camelCase")]
-pub struct Patient {
-    pub first_name: String,
-    pub middle_initial: Option<char>,
-    pub last_name: String,
-    pub date_of_birth: String,
-    pub sex: Sex,
-    pub physical_address: String,
-    pub phone_number: String,
-    pub email_address: String,
-    pub emergency_contact_first_name: Option<String>,
-    pub emergency_contact_middle_initial: Option<char>,
-    pub emergency_contact_last_name: Option<String>,
-    pub emergency_contact_relationship: Option<String>,
-    pub emergency_contact_phone_number: Option<String>,
+#[tauri::command]
+pub async fn create_patient(
+    patient: CreatePatient,
+    repo: State<'_, Arc<Repository>>,
+) -> Result<i64, String> {
+    let repo = repo.inner().clone();
+    tokio::spawn(async move {
+        repo.create_patient(patient.into())
+            .await
+            .map_err(|e| e.to_string())
+    })
+    .await
+    .unwrap_or_else(|e| Err(e.to_string()))
 }
 
-#[derive(Debug, Serialize, Deserialize, Clone)]
-#[serde(rename_all = "lowercase")]
-pub enum Sex {
-    Male,
-    Female,
+#[tauri::command]
+pub async fn get_patient(
+    id: i64, 
+    repo: State<'_, Arc<Repository>>
+) -> Result<Option<Patient>, String> {
+    let repo = repo.inner().clone();
+    tokio::spawn(async move {
+        repo.get_patient(id).await.map_err(|e| e.to_string())
+    })
+    .await
+    .unwrap_or_else(|e| Err(e.to_string()))
 }
 
-lazy_static! {
-    static ref PATIENTS: Mutex<Vec<WithId<Patient>>> = Mutex::new(Vec::new());
-    static ref NEXT_ID: Mutex<i64> = Mutex::new(1);
+#[tauri::command]
+pub async fn update_patient(
+    patient: UpdatePatient,
+    repo: State<'_, Arc<Repository>>,
+) -> Result<bool, String> {
+    let repo = repo.inner().clone();
+    tokio::spawn(async move {
+        repo.update_patient(patient.into())
+            .await
+            .map_err(|e| e.to_string())
+    })
+    .await
+    .unwrap_or_else(|e| Err(e.to_string()))
 }
 
-#[command]
-pub fn create_patient(new_patient: Patient) -> Result<i64, String> {
-    let mut patients = PATIENTS
-        .lock()
-        .map_err(|e| format!("Failed to lock patients mutex: {}", e))?;
-    let mut next_id = NEXT_ID
-        .lock()
-        .map_err(|e| format!("Failed to lock next_id mutex: {}", e))?;
-
-    let patient = WithId {
-        id: *next_id,
-        inner: new_patient,
-    };
-
-    *next_id += 1;
-    patients.push(patient.clone());
-    Ok(patient.id)
+#[tauri::command]
+pub async fn delete_patient(
+    id: i64, 
+    repo: State<'_, Arc<Repository>>
+) -> Result<bool, String> {
+    let repo = repo.inner().clone();
+    tokio::spawn(async move {
+        repo.delete_patient(id).await.map_err(|e| e.to_string())
+    })
+    .await
+    .unwrap_or_else(|e| Err(e.to_string()))
 }
 
-#[command]
-pub fn read_patient(id: i64) -> Result<Option<WithId<Patient>>, String> {
-    let patients = PATIENTS
-        .lock()
-        .map_err(|e| format!("Failed to lock patients mutex: {}", e))?;
-
-    Ok(patients.iter().find(|p| p.id == id).cloned())
-}
-
-#[command]
-pub fn update_patient(updated: WithId<Patient>) -> Result<i64, String> {
-    let mut patients = PATIENTS
-        .lock()
-        .map_err(|e| format!("Failed to lock patients mutex: {}", e))?;
-
-    if let Some(patient) = patients.iter_mut().find(|p| p.id == updated.id) {
-        *patient = updated;
-        Ok(patient.id)
-    } else {
-        Err(format!("Patient with id {} not found", updated.id))
-    }
-}
-
-#[command]
-pub fn delete_patient(id: i64) -> Result<i64, String> {
-    let mut patients = PATIENTS
-        .lock()
-        .map_err(|e| format!("Failed to lock patients mutex: {}", e))?;
-
-    if let Some(pos) = patients.iter().position(|p| p.id == id) {
-        patients.remove(pos);
-        Ok(id)
-    } else {
-        Err(format!("Patient with id {} not found", id))
-    }
-}
-
-#[command]
-pub fn list_patients() -> Result<Vec<WithId<Patient>>, String> {
-    let patients = PATIENTS
-        .lock()
-        .map_err(|e| format!("Failed to lock patients mutex: {}", e))?;
-
-    Ok(patients.clone())
+#[tauri::command]
+pub async fn list_patients(
+    repo: State<'_, Arc<Repository>>
+) -> Result<Vec<Patient>, String> {
+    let repo = repo.inner().clone();
+    tokio::spawn(async move {
+        repo.list_patients().await.map_err(|e| e.to_string())
+    })
+    .await
+    .unwrap_or_else(|e| Err(e.to_string()))
 }
