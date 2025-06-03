@@ -1,0 +1,15 @@
+pre-commit:
+  parallel: true
+  jobs:
+    - run: pnpm eslint "{staged_files}"
+      glob: "*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"
+    - run: pnpm prettier --write "{staged_files}" --ignore-unknown
+      stage_fixed: true
+
+    - run: cargo check
+      glob: "*.rs"
+      root: "src-tauri/"
+    - run: rustfmt "{staged_files}"
+      glob: "*.rs"
+      root: "src-tauri/"
+      stage_fixed: true
