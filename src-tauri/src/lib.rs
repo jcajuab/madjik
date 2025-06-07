@@ -9,8 +9,8 @@ pub fn run() {
                     "sqlite:madjik.db",
                     vec![Migration {
                         version: 1,
-                        description: "create_patient_table",
-                        sql: include_str!("../migrations/0000_cute_gwen_stacy.sql"),
+                        description: "create_patient_related_tables",
+                        sql: include_str!("../migrations/0000_sad_hardball.sql"),
                         kind: MigrationKind::Up,
                     }],
                 )

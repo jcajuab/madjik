@@ -1,11 +1,11 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "f3424096-12e5-49a0-8716-5979f448b262",
+  "id": "eb5169c7-679d-472c-aa92-ceb106e4fe19",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
-    "patients": {
-      "name": "patients",
+    "addresses": {
+      "name": "addresses",
       "columns": {
         "id": {
           "name": "id",
@@ -14,8 +14,257 @@
           "notNull": true,
           "autoincrement": true
         },
-        "mrn": {
-          "name": "mrn",
+        "street": {
+          "name": "street",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "barangay": {
+          "name": "barangay",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "city_municipality": {
+          "name": "city_municipality",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "province": {
+          "name": "province",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "region": {
+          "name": "region",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "zip_code": {
+          "name": "zip_code",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(CURRENT_TIMESTAMP)"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "idx_addresses_city_municipality": {
+          "name": "idx_addresses_city_municipality",
+          "columns": ["city_municipality"],
+          "isUnique": false
+        },
+        "idx_addresses_province": {
+          "name": "idx_addresses_province",
+          "columns": ["province"],
+          "isUnique": false
+        },
+        "idx_addresses_deleted_at": {
+          "name": "idx_addresses_deleted_at",
+          "columns": ["deleted_at"],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "emergency_contact_addresses": {
+      "name": "emergency_contact_addresses",
+      "columns": {
+        "emergency_contact_id": {
+          "name": "emergency_contact_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "address_id": {
+          "name": "address_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "is_primary": {
+          "name": "is_primary",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(CURRENT_TIMESTAMP)"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "idx_emergency_contact_addresses_primary": {
+          "name": "idx_emergency_contact_addresses_primary",
+          "columns": ["emergency_contact_id", "is_primary"],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "emergency_contact_addresses_emergency_contact_id_emergency_contacts_id_fk": {
+          "name": "emergency_contact_addresses_emergency_contact_id_emergency_contacts_id_fk",
+          "tableFrom": "emergency_contact_addresses",
+          "tableTo": "emergency_contacts",
+          "columnsFrom": ["emergency_contact_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "emergency_contact_addresses_address_id_addresses_id_fk": {
+          "name": "emergency_contact_addresses_address_id_addresses_id_fk",
+          "tableFrom": "emergency_contact_addresses",
+          "tableTo": "addresses",
+          "columnsFrom": ["address_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "emergency_contact_addresses_emergency_contact_id_address_id_pk": {
+          "columns": ["emergency_contact_id", "address_id"],
+          "name": "emergency_contact_addresses_emergency_contact_id_address_id_pk"
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "emergency_contact_phone_numbers": {
+      "name": "emergency_contact_phone_numbers",
+      "columns": {
+        "emergency_contact_id": {
+          "name": "emergency_contact_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "phone_number_id": {
+          "name": "phone_number_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "is_primary": {
+          "name": "is_primary",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(CURRENT_TIMESTAMP)"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "idx_emergency_contact_phone_numbers_primary": {
+          "name": "idx_emergency_contact_phone_numbers_primary",
+          "columns": ["emergency_contact_id", "is_primary"],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "emergency_contact_phone_numbers_emergency_contact_id_emergency_contacts_id_fk": {
+          "name": "emergency_contact_phone_numbers_emergency_contact_id_emergency_contacts_id_fk",
+          "tableFrom": "emergency_contact_phone_numbers",
+          "tableTo": "emergency_contacts",
+          "columnsFrom": ["emergency_contact_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "emergency_contact_phone_numbers_phone_number_id_phone_numbers_id_fk": {
+          "name": "emergency_contact_phone_numbers_phone_number_id_phone_numbers_id_fk",
+          "tableFrom": "emergency_contact_phone_numbers",
+          "tableTo": "phone_numbers",
+          "columnsFrom": ["phone_number_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "emergency_contact_phone_numbers_emergency_contact_id_phone_number_id_pk": {
+          "columns": ["emergency_contact_id", "phone_number_id"],
+          "name": "emergency_contact_phone_numbers_emergency_contact_id_phone_number_id_pk"
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "emergency_contacts": {
+      "name": "emergency_contacts",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "patient_id": {
+          "name": "patient_id",
           "type": "integer",
           "primaryKey": false,
           "notNull": true,
@@ -37,6 +286,272 @@
         },
         "last_name": {
           "name": "last_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "relationship": {
+          "name": "relationship",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "email": {
+          "name": "email",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(CURRENT_TIMESTAMP)"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "idx_emergency_contacts_last_name": {
+          "name": "idx_emergency_contacts_last_name",
+          "columns": ["last_name"],
+          "isUnique": false
+        },
+        "idx_emergency_contacts_deleted_at": {
+          "name": "idx_emergency_contacts_deleted_at",
+          "columns": ["deleted_at"],
+          "isUnique": false
+        },
+        "idx_emergency_contacts_name": {
+          "name": "idx_emergency_contacts_name",
+          "columns": ["last_name", "first_name"],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "emergency_contacts_patient_id_patients_id_fk": {
+          "name": "emergency_contacts_patient_id_patients_id_fk",
+          "tableFrom": "emergency_contacts",
+          "tableTo": "patients",
+          "columnsFrom": ["patient_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "patient_addresses": {
+      "name": "patient_addresses",
+      "columns": {
+        "patient_id": {
+          "name": "patient_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "address_id": {
+          "name": "address_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "is_primary": {
+          "name": "is_primary",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(CURRENT_TIMESTAMP)"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "idx_patient_addresses_primary": {
+          "name": "idx_patient_addresses_primary",
+          "columns": ["patient_id", "is_primary"],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "patient_addresses_patient_id_patients_id_fk": {
+          "name": "patient_addresses_patient_id_patients_id_fk",
+          "tableFrom": "patient_addresses",
+          "tableTo": "patients",
+          "columnsFrom": ["patient_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "patient_addresses_address_id_addresses_id_fk": {
+          "name": "patient_addresses_address_id_addresses_id_fk",
+          "tableFrom": "patient_addresses",
+          "tableTo": "addresses",
+          "columnsFrom": ["address_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "patient_addresses_patient_id_address_id_pk": {
+          "columns": ["patient_id", "address_id"],
+          "name": "patient_addresses_patient_id_address_id_pk"
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "patient_phone_numbers": {
+      "name": "patient_phone_numbers",
+      "columns": {
+        "patient_id": {
+          "name": "patient_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "phone_number_id": {
+          "name": "phone_number_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "is_primary": {
+          "name": "is_primary",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(CURRENT_TIMESTAMP)"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "idx_patient_phone_numbers_primary": {
+          "name": "idx_patient_phone_numbers_primary",
+          "columns": ["patient_id", "is_primary"],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "patient_phone_numbers_patient_id_patients_id_fk": {
+          "name": "patient_phone_numbers_patient_id_patients_id_fk",
+          "tableFrom": "patient_phone_numbers",
+          "tableTo": "patients",
+          "columnsFrom": ["patient_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "patient_phone_numbers_phone_number_id_phone_numbers_id_fk": {
+          "name": "patient_phone_numbers_phone_number_id_phone_numbers_id_fk",
+          "tableFrom": "patient_phone_numbers",
+          "tableTo": "phone_numbers",
+          "columnsFrom": ["phone_number_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "patient_phone_numbers_patient_id_phone_number_id_pk": {
+          "columns": ["patient_id", "phone_number_id"],
+          "name": "patient_phone_numbers_patient_id_phone_number_id_pk"
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "patients": {
+      "name": "patients",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "mrn": {
+          "name": "mrn",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "first_name": {
+          "name": "first_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "middle_name": {
+          "name": "middle_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "last_name": {
+          "name": "last_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "dob": {
+          "name": "dob",
           "type": "text",
           "primaryKey": false,
           "notNull": false,
@@ -99,18 +614,96 @@
           "columns": ["mrn"],
           "isUnique": true
         },
-        "idx_patients_sex": {
-          "name": "idx_patients_sex",
-          "columns": ["sex"],
-          "isUnique": false
-        },
-        "idx_patients_blood_type": {
-          "name": "idx_patients_blood_type",
-          "columns": ["blood_type"],
+        "idx_patients_last_name": {
+          "name": "idx_patients_last_name",
+          "columns": ["last_name"],
           "isUnique": false
         },
         "idx_patients_deleted_at": {
           "name": "idx_patients_deleted_at",
+          "columns": ["deleted_at"],
+          "isUnique": false
+        },
+        "idx_patients_name": {
+          "name": "idx_patients_name",
+          "columns": ["last_name", "first_name"],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "phone_numbers": {
+      "name": "phone_numbers",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "raw": {
+          "name": "raw",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "country_code": {
+          "name": "country_code",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "country_calling_code": {
+          "name": "country_calling_code",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "e164": {
+          "name": "e164",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(CURRENT_TIMESTAMP)"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "uniq_phone_numbers_e164": {
+          "name": "uniq_phone_numbers_e164",
+          "columns": ["e164"],
+          "isUnique": true
+        },
+        "idx_phone_numbers_deleted_at": {
+          "name": "idx_phone_numbers_deleted_at",
           "columns": ["deleted_at"],
           "isUnique": false
         }

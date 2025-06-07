@@ -13,3 +13,6 @@ Thumbs.db
 # Tauri
 src-tauri/target/
 src-tauri/gen/schemas/
+
+# Environment Variables
+.env*

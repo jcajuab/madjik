@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "lint": "eslint --fix",
     "format": "prettier . --write",
-    "db:generate": "drizzle-kit generate"
+    "db:generate": "drizzle-kit generate",
+    "db:typegen": "kysely-codegen --config-file kysely-codegen.config.ts"
   },
   "dependencies": {
     "@tauri-apps/plugin-sql": "^2.2.0",
@@ -29,6 +30,7 @@
     "@types/react": "^19.1.6",
     "@types/react-dom": "^19.1.6",
     "@vitejs/plugin-react": "^4.5.1",
+    "better-sqlite3": "^11.10.0",
     "daisyui": "^5.0.43",
     "drizzle-kit": "^0.31.1",
     "drizzle-orm": "^0.44.2",
@@ -37,6 +39,7 @@
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "globals": "^16.2.0",
+    "kysely-codegen": "^0.18.5",
     "lefthook": "^1.11.13",
     "prettier": "^3.5.3",
     "prettier-plugin-tailwindcss": "^0.6.12",
