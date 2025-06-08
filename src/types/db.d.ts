@@ -45,8 +45,7 @@ export interface EmergencyContacts {
   email: string | null;
   firstName: string;
   id: Generated<number>;
-  lastName: string | null;
-  middleName: string | null;
+  lastName: string;
   patientId: number;
   relationship: string;
   updatedAt: string | null;
@@ -77,8 +76,7 @@ export interface Patients {
   email: string | null;
   firstName: string;
   id: Generated<number>;
-  lastName: string | null;
-  middleName: string | null;
+  lastName: string;
   mrn: string;
   sex: string;
   updatedAt: string | null;

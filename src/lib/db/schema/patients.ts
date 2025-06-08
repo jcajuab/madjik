@@ -7,8 +7,7 @@ export const patients = sqliteTable(
     id: integer("id").primaryKey({ autoIncrement: true }),
     mrn: text("mrn").notNull().unique("uniq_patients_mrn"),
     firstName: text("first_name").notNull(),
-    middleName: text("middle_name"),
-    lastName: text("last_name"),
+    lastName: text("last_name").notNull(),
     dob: text("dob"),
     sex: text("sex", {
       enum: ["Male", "Female", "Intersex", "Unknown"],

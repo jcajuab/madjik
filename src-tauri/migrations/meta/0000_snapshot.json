@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "eb5169c7-679d-472c-aa92-ceb106e4fe19",
+  "id": "9a9e77ba-eb1c-4f59-a303-46dd78a8ecb1",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "addresses": {
@@ -277,18 +277,11 @@
           "notNull": true,
           "autoincrement": false
         },
-        "middle_name": {
-          "name": "middle_name",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
         "last_name": {
           "name": "last_name",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "relationship": {
@@ -536,18 +529,11 @@
           "notNull": true,
           "autoincrement": false
         },
-        "middle_name": {
-          "name": "middle_name",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
         "last_name": {
           "name": "last_name",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "dob": {

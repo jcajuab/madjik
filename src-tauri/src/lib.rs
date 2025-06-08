@@ -10,7 +10,7 @@ pub fn run() {
                     vec![Migration {
                         version: 1,
                         description: "create_patient_related_tables",
-                        sql: include_str!("../migrations/0000_sad_hardball.sql"),
+                        sql: include_str!("../migrations/0000_curvy_wraith.sql"),
                         kind: MigrationKind::Up,
                     }],
                 )

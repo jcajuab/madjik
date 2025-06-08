@@ -11,8 +11,7 @@ export const emergencyContacts = sqliteTable(
       .notNull()
       .references(() => patients.id, { onDelete: "cascade" }),
     firstName: text("first_name").notNull(),
-    middleName: text("middle_name"),
-    lastName: text("last_name"),
+    lastName: text("last_name").notNull(),
     relationship: text("relationship").notNull(),
     email: text("email"),
     createdAt: text("created_at")
